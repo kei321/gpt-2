@@ -2,6 +2,8 @@
 # Usage:
 #  PYTHONPATH=src ./train --dataset <file|directory|glob>
 
+from distutils.dir_util import copy_tree
+
 import argparse
 import json
 import os
@@ -206,6 +208,7 @@ def main():
                 sess,
                 os.path.join(CHECKPOINT_DIR, args.run_name, 'model'),
                 global_step=counter)
+            copy_tree("/content/gpt-2/checkpoint", "/content/drive/My Drive/Colab Notebooks")
             with open(counter_path, 'w') as fp:
                 fp.write(str(counter) + '\n')
 
