@@ -32,7 +32,7 @@ parser.add_argument('--combine', metavar='CHARS', type=int, default=50000, help=
 parser.add_argument('--encoding', type=str, default='utf-8', help='Set the encoding for reading and writing files.')
 
 parser.add_argument('--batch_size', metavar='SIZE', type=int, default=1, help='Batch size')
-parser.add_argument('--learning_rate', metavar='LR', type=float, default=0.00002, help='Learning rate for Adam')
+parser.add_argument('--learning_rate', metavar='LR', type=float, default=0.0001, help='Learning rate for Adam')
 parser.add_argument('--accumulate_gradients', metavar='N', type=int, default=1, help='Accumulate gradients across N minibatches.')
 parser.add_argument('--memory_saving_gradients', default=False, action='store_true', help='Use gradient checkpointing to reduce vram usage.')
 parser.add_argument('--only_train_transformer_layers', default=False, action='store_true', help='Restrict training to the transformer blocks.')
@@ -44,13 +44,13 @@ parser.add_argument('--top_p', type=float, default=0.0, help='P for top-p sampli
 
 parser.add_argument('--restore_from', type=str, default='latest', help='Either "latest", "fresh", or a path to a checkpoint file')
 parser.add_argument('--run_name', type=str, default='run1', help='Run id. Name of subdirectory in checkpoint/ and samples/')
-parser.add_argument('--sample_every', metavar='N', type=int, default=100, help='Generate samples every N steps')
+parser.add_argument('--sample_every', metavar='N', type=int, default=1000, help='Generate samples every N steps')
 parser.add_argument('--sample_length', metavar='TOKENS', type=int, default=1023, help='Sample this many tokens')
 parser.add_argument('--sample_num', metavar='N', type=int, default=1, help='Generate this many samples')
-parser.add_argument('--save_every', metavar='N', type=int, default=1000, help='Write a checkpoint every N steps')
+parser.add_argument('--save_every', metavar='N', type=int, default=5000, help='Write a checkpoint every N steps')
 
 parser.add_argument('--val_dataset', metavar='PATH', type=str, default=None, help='Dataset for validation loss, defaults to --dataset.')
-parser.add_argument('--val_batch_size', metavar='SIZE', type=int, default=2, help='Batch size for validation.')
+parser.add_argument('--val_batch_size', metavar='SIZE', type=int, default=4, help='Batch size for validation.')
 parser.add_argument('--val_batch_count', metavar='N', type=int, default=40, help='Number of batches for validation.')
 parser.add_argument('--val_every', metavar='STEPS', type=int, default=0, help='Calculate validation loss every STEPS steps.')
 
@@ -82,7 +82,7 @@ def main():
         raise ValueError(
             "Can't get samples longer than window size: %s" % hparams.n_ctx)
 
-    if args.model_name == '345M':
+    if args.model_name == '345M' or args.model_name == '774M':
         args.memory_saving_gradients = True
         if args.optimizer == 'adam':
             args.only_train_transformer_layers = True
