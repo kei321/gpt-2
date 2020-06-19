@@ -54,6 +54,7 @@ parser.add_argument('--val_batch_size', metavar='SIZE', type=int, default=4, hel
 parser.add_argument('--val_batch_count', metavar='N', type=int, default=40, help='Number of batches for validation.')
 parser.add_argument('--val_every', metavar='STEPS', type=int, default=0, help='Calculate validation loss every STEPS steps.')
 
+parser.add_argument('--max_steps', type=int, default=20000, help='max steps')
 
 def maketree(path):
     try:
@@ -291,6 +292,10 @@ def main():
                         avg=avg_loss[0] / avg_loss[1]))
 
                 counter += 1
+                if counter > args.max_steps:
+                    print('Reach max step')
+                    save()
+                    break
         except KeyboardInterrupt:
             print('interrupted')
             save()
